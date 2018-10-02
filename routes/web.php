@@ -39,3 +39,5 @@ Route::get('/post{id?}', function ($id=null) {
 
     return view('posts.post');
 })->where(['id'=>'[0-9]+']);
+
+Route::resource('/projects', 'ProjectsController');
