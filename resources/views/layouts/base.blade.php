@@ -10,12 +10,14 @@
     <title>Blog Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    {{--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">--}}
     <link href="{{ URL::asset('dist/css/bootstrap.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <link href="{{ URL::asset('blog.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -124,6 +126,11 @@
         bg: '#55595c',
         fg: '#eceeef',
         text: 'Thumbnail'
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 </body>

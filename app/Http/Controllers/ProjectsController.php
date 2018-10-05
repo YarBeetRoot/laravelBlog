@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Project;
+use DB;
+use Storage;
 
 class ProjectsController extends Controller
 {
@@ -13,7 +16,33 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        echo __METHOD__;
+        //echo __METHOD__;
+
+        //$articles = DB::select("SELECT * FROM `projects`");die;
+        //$articles = DB::table('projects')->get();
+        //$articles = DB::table('projects')->first();
+        //$articles = DB::table('projects')->value('name');
+        //$articles = DB::table('projects')->pluck('name');
+        //$articles = DB::table('projects')->count();
+        //$articles = DB::table('projects')->max('id');
+        //$articles = DB::table('projects')->select('id', 'name', 'image')->get();
+        //$articles = DB::table('projects')->distinct()->select('name', 'image')->get();
+        //$articles = DB::table('projects')->distinct()->select('name', 'image')->get();
+        /*$articles = DB::table('projects')
+            ->whereBetween('id', [1,3])
+            ->orderByDesc('id')
+            ->get();*/
+        //$articles = DB::table('projects')->where('id', 3)->update(['name'=>'Hi']);
+        //$articles = DB::table('projects')->where('id', 3)->delete();
+
+
+        //var_dump($articles);
+
+        $data = [
+            'projects' => DB::table('projects')->get(['id','name','code','image','active'])
+        ];
+
+        return view('projects.projects', $data);
     }
 
     /**
@@ -34,7 +63,24 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        echo __METHOD__;
+        if($request->hasFile('image')){
+            $request->file('image');
+            $image = $request->image->path();
+            $request->image->storeAs('public', $image);
+        }else{
+            $image = '';
+        }
+
+        DB::table('projects')->insert
+            ([
+                'name' => $request->name,
+                'code' => $request->code,
+                'image' => $image,
+                'description' => '',
+                'active' => 1,
+                'view_count' => 10
+            ]);
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -56,7 +102,11 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        echo __METHOD__;
+        $data = [
+            'project' => DB::table('projects')->where('id', $id)->first(['id','name','code','image','active'])
+        ];
+
+        return view('projects.edit-user', $data);
     }
 
     /**
@@ -68,7 +118,22 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo __METHOD__;
+        if($request->hasFile('image')){
+            $request->file('image');
+            $image = $request->image->path();
+            $request->image->storeAs('public', $image);
+        }else{
+            $image = $request->old_image;
+        }
+
+
+        DB::table('projects')->where('id', $id)->update
+        ([
+            'name' => $request->name,
+            'code' => $request->code,
+            'image' => $image
+        ]);
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -79,6 +144,7 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        echo __METHOD__;
+        DB::table('projects')->delete($id);
+        return redirect()->route('projects.index');
     }
 }
