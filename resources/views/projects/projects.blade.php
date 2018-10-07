@@ -9,7 +9,7 @@
                         <h2>User <b>Management</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addUser"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+                        <a href="{{ route('projects.create') }}" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 @foreach($projects as $project)
                 <tr>
                     <td>{{$loop->index+1}}</td>
-                    <td><a href="#"><img src="{{Storage::url($project->image)}}" class="avatar" alt="Avatar"> {{$project->name}}</a></td>
+                    <td><a href="{{ route('projects.show',$project->id) }}"><img src="{{asset('storage/'.$project->image)}}" class="avatar" alt="Avatar"> {{$project->name}}</a></td>
                     <td>04/10/2013</td>
                     <td>{{$project->code}}</td>
                     <td><span class="status text-success">&bull;</span> Active</td>
@@ -55,7 +55,6 @@
             </div>
         </div>
     </div>
-    @include('modals.add-user')
 @endsection
 
 @section('side-bar')

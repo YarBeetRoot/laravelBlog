@@ -38,6 +38,41 @@ class ProjectsController extends Controller
 
         //var_dump($articles);
 
+        //$projects = Project::all();
+        //$projects = Project::where('id', '>', 3)->orderBy('name')->take(2)->get();
+        //$projects = Project::where('id', 16)->firstOrFail();
+        //$projects = Project::findOrFail(100);
+        /*$projects = Project::find(16);
+        $projects->name = 'New name';
+        $projects->code = 'New code';
+
+        $projects->save();*/
+
+        /*$projects - Project::firstOrCreate([
+
+            'name' => 'Hi',
+            'code' => 'hihi'
+
+        ]);*/
+
+        /*$projects - Project::firstOrNew([
+
+            'name' => 'Hi',
+            'code' => 'hihi'
+
+        ]);
+
+        $projects->save();*/
+
+        /*$project = Project::find(16);
+
+        $project->delete();*/
+
+        //Project::destroy(22);
+
+        //Project::where('id', '>', 3)->delete();
+
+
         $data = [
             'projects' => DB::table('projects')->get(['id','name','code','image','active'])
         ];
@@ -52,7 +87,7 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        echo __METHOD__;
+        return view('projects.create-user');
     }
 
     /**
@@ -63,6 +98,7 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
+        //Storage::disk('local')->put('file.txt', 'Contents');
         if($request->hasFile('image')){
             $request->file('image');
             $image = $request->image->path();
@@ -91,7 +127,11 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        echo __METHOD__;
+        $data = [
+            'user' => DB::table('projects')->find($id)
+        ];
+
+        return view('projects.user', $data);
     }
 
     /**
