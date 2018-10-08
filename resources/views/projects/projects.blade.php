@@ -34,10 +34,9 @@
                     <td><span class="status text-success">&bull;</span> Active</td>
                     <td>
                         <a href="{{ route('projects.edit', $project->id) }}" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                        <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteUser_{{ $project->id }}"><i class="material-icons">&#xE5C9;</i></a>
+                        <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteUser" data-action="{{ route('projects.destroy', $project->id) }}" data-user-name="{{$project->name}}"><i class="material-icons">&#xE5C9;</i></a>
                     </td>
                 </tr>
-                @include('modals.delete-user')
                 @endforeach
                 </tbody>
             </table>
@@ -55,7 +54,22 @@
             </div>
         </div>
     </div>
+    @include('modals.delete-user')
 @endsection
 
 @section('side-bar')
+@endsection
+@section('scripts')
+<script>
+    $('#deleteUser').on('show.bs.modal', function (event) {
+
+        let button = $(event.relatedTarget); // Button that triggered the modal
+        let action = button.data('action'); // Extract info from data-* attributes
+        let userName = button.data('user-name'); // Extract info from data-* attributes
+        let modal = $(this);
+        modal.find('.modal-title').text('Are you sure you want to delete ' + userName);
+        modal.find('#deleteUserForm').attr('action', action);
+    })
+</script>
+
 @endsection
