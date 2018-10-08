@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th>Avatar</th>
-                <td><img src="{{asset('storage/'.$user->image)}}" class="avatar" alt="Avatar"></td>
+                <td><img src="{{asset('storage/avatar/'.$user->image)}}" class="avatar" alt="Avatar"></td>
             </tr>
             <tr>
                 <th>Name</th>
