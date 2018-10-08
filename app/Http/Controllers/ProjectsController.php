@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use App\Project;
 use DB;
 use Storage;
@@ -72,11 +73,10 @@ class ProjectsController extends Controller
 
         //Project::where('id', '>', 3)->delete();
 
-        $projects = Project::all();
-        $projects[1]->capitalizeNameFirstLetter();
+        //$projects = Project::all();
+        //$projects[1]->capitalizeNameFirstLetter();
 
-        dd($projects[1]->save());
-
+        //dd($projects[1]->save());
 
         $data = [
             'projects' => DB::table('projects')->get(['id','name','code','image','active'])
@@ -103,20 +103,20 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //Storage::disk('local')->put('file.txt', 'Contents');
         if($request->hasFile('image')){
-            $request->file('image');
-            $image = $request->image->path();
-            $request->image->storeAs('public', $image);
+            $tempFilePath = $request->image->getRealPath();
+            $filePath = Storage::putFile('public/avatar', new File($tempFilePath));
+            $fileName = basename($filePath);
+
         }else{
-            $image = '';
+            $fileName = 'default-ava.png';
         }
 
         DB::table('projects')->insert
             ([
                 'name' => $request->name,
                 'code' => $request->code,
-                'image' => $image,
+                'image' => $fileName,
                 'description' => '',
                 'active' => 1,
                 'view_count' => 10
@@ -164,11 +164,12 @@ class ProjectsController extends Controller
     public function update(Request $request, $id)
     {
         if($request->hasFile('image')){
-            $request->file('image');
-            $image = $request->image->path();
-            $request->image->storeAs('public', $image);
+            $tempFilePath = $request->image->getRealPath();
+            $filePath = Storage::putFile('public/avatar', new File($tempFilePath));
+            $fileName = basename($filePath);
+            Storage::delete('public/avatar/' . $request->old_image);
         }else{
-            $image = $request->old_image;
+            $fileName = $request->old_image;
         }
 
 
@@ -176,7 +177,7 @@ class ProjectsController extends Controller
         ([
             'name' => $request->name,
             'code' => $request->code,
-            'image' => $image
+            'image' => $fileName
         ]);
         return redirect()->route('projects.index');
     }
@@ -189,7 +190,14 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
+        $row = DB::table('projects')->find($id, ['image']);
+
+        if($row->image != 'default-ava.png'){
+            Storage::delete('public/avatar/' . $row->image);
+        }
+
         DB::table('projects')->delete($id);
+
         return redirect()->route('projects.index');
     }
 }

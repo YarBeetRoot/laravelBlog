@@ -28,7 +28,7 @@
                 @foreach($projects as $project)
                 <tr>
                     <td>{{$loop->index+1}}</td>
-                    <td><a href="{{ route('projects.show',$project->id) }}"><img src="{{asset('storage/'.$project->image)}}" class="avatar" alt="Avatar"> {{$project->name}}</a></td>
+                    <td><a href="{{ route('projects.show',$project->id) }}"><img src="{{asset('storage/avatar/'.$project->image)}}" class="avatar" alt="Avatar"> {{$project->name}}</a></td>
                     <td>04/10/2013</td>
                     <td>{{$project->code}}</td>
                     <td><span class="status text-success">&bull;</span> Active</td>

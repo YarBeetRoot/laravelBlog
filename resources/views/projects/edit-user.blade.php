@@ -14,7 +14,7 @@
                 <input type="text" name="code" class="form-control" id="role" placeholder="Role" value="{{$project->code}}">
             </div>
             <div class="form-group">
-                <img src="{{Storage::url($project->image)}}" class="avatar" alt="Avatar">
+                <img src="{{asset('storage/avatar/'.$project->image)}}" class="avatar" alt="Avatar">
                 <label for="image">Your photo</label>
                 <input type="file" name="image" class="form-control-file" id="image">
                 <input type="hidden" name="old_image" value="{{$project->image}}">
