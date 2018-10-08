@@ -72,6 +72,11 @@ class ProjectsController extends Controller
 
         //Project::where('id', '>', 3)->delete();
 
+        $projects = Project::all();
+        $projects[1]->capitalizeNameFirstLetter();
+
+        dd($projects[1]->save());
+
 
         $data = [
             'projects' => DB::table('projects')->get(['id','name','code','image','active'])
